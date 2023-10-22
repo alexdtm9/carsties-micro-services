@@ -478,6 +478,3 @@ $RECYCLE.BIN/
 
 # Jetbrains
 .idea/
-
-# Docker Volume
-postgres-data/
