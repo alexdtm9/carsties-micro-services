@@ -14,7 +14,7 @@ public class DbInitializer
     private static void SeedData(AuctionDbContext? context)
     {
         if (context == null) return;
-        
+
         context.Database.EnsureCreated();
 
         if (context.Auctions.Any())
