@@ -55,11 +55,10 @@ public class AuctionsController : ControllerBase
         var auction = _mapper.Map<Auction>(auctionDto);
         auction.Seller = "Placeholder seller";
         _context.Auctions.Add(auction);
-        var result = await _context.SaveChangesAsync() > 0;
-
         var newAuction = _mapper.Map<AuctionDto>(auction);
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
-
+        var result = await _context.SaveChangesAsync() > 0;
+        
         if (!result) BadRequest("Could not save auction.");
 
         return CreatedAtAction(nameof(GetAuction), new { id = auction.Id },newAuction);
