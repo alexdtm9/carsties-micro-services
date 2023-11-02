@@ -92,9 +92,13 @@ public class AuctionsController : ControllerBase
         var auction = await _context.Auctions.FirstOrDefaultAsync(x => x.Id == id);
 
         if (auction == null) return NotFound();
-
         _context.Remove(auction);
-        if (await _context.SaveChangesAsync() > 0) return BadRequest("Could not delete action");
+        
+        await _publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() }); 
+        
+        var result = await _context.SaveChangesAsync() > 0;
+        
+        if (!result) return BadRequest("Could not update DB");
 
         return Ok();
     }
